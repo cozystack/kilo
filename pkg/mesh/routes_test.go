@@ -680,6 +680,7 @@ func TestRoutes(t *testing.T) {
 					Flags:     int(netlink.FLAG_ONLINK),
 					Gw:        nodes["c"].InternalIP.IP,
 					LinkIndex: tunlIface,
+					Src:       nodes["b"].InternalIP.IP,
 					Protocol:  unix.RTPROT_STATIC,
 				},
 				{
@@ -687,6 +688,7 @@ func TestRoutes(t *testing.T) {
 					Flags:     int(netlink.FLAG_ONLINK),
 					Gw:        nodes["c"].InternalIP.IP,
 					LinkIndex: tunlIface,
+					Src:       nodes["b"].InternalIP.IP,
 					Protocol:  unix.RTPROT_STATIC,
 					Table:     kiloTableIndex,
 				},
@@ -815,6 +817,7 @@ func TestRoutes(t *testing.T) {
 					Flags:     int(netlink.FLAG_ONLINK),
 					Gw:        nodes["b"].InternalIP.IP,
 					LinkIndex: tunlIface,
+					Src:       nodes["c"].InternalIP.IP,
 					Protocol:  unix.RTPROT_STATIC,
 				},
 				{
@@ -822,6 +825,7 @@ func TestRoutes(t *testing.T) {
 					Flags:     int(netlink.FLAG_ONLINK),
 					Gw:        nodes["b"].InternalIP.IP,
 					LinkIndex: tunlIface,
+					Src:       nodes["c"].InternalIP.IP,
 					Protocol:  unix.RTPROT_STATIC,
 				},
 				{
@@ -829,6 +833,7 @@ func TestRoutes(t *testing.T) {
 					Flags:     int(netlink.FLAG_ONLINK),
 					Gw:        nodes["b"].InternalIP.IP,
 					LinkIndex: tunlIface,
+					Src:       nodes["c"].InternalIP.IP,
 					Protocol:  unix.RTPROT_STATIC,
 				},
 				{
@@ -836,6 +841,7 @@ func TestRoutes(t *testing.T) {
 					Flags:     int(netlink.FLAG_ONLINK),
 					Gw:        nodes["b"].InternalIP.IP,
 					LinkIndex: tunlIface,
+					Src:       nodes["c"].InternalIP.IP,
 					Protocol:  unix.RTPROT_STATIC,
 				},
 				{
@@ -843,6 +849,7 @@ func TestRoutes(t *testing.T) {
 					Flags:     int(netlink.FLAG_ONLINK),
 					Gw:        nodes["b"].InternalIP.IP,
 					LinkIndex: tunlIface,
+					Src:       nodes["c"].InternalIP.IP,
 					Protocol:  unix.RTPROT_STATIC,
 				},
 				{
@@ -850,6 +857,7 @@ func TestRoutes(t *testing.T) {
 					Flags:     int(netlink.FLAG_ONLINK),
 					Gw:        nodes["b"].InternalIP.IP,
 					LinkIndex: tunlIface,
+					Src:       nodes["c"].InternalIP.IP,
 					Protocol:  unix.RTPROT_STATIC,
 					Table:     kiloTableIndex,
 				},
@@ -858,6 +866,7 @@ func TestRoutes(t *testing.T) {
 					Flags:     int(netlink.FLAG_ONLINK),
 					Gw:        nodes["b"].InternalIP.IP,
 					LinkIndex: tunlIface,
+					Src:       nodes["c"].InternalIP.IP,
 					Protocol:  unix.RTPROT_STATIC,
 				},
 				{
@@ -865,6 +874,7 @@ func TestRoutes(t *testing.T) {
 					Flags:     int(netlink.FLAG_ONLINK),
 					Gw:        nodes["b"].InternalIP.IP,
 					LinkIndex: tunlIface,
+					Src:       nodes["c"].InternalIP.IP,
 					Protocol:  unix.RTPROT_STATIC,
 				},
 				{
@@ -872,6 +882,7 @@ func TestRoutes(t *testing.T) {
 					Flags:     int(netlink.FLAG_ONLINK),
 					Gw:        nodes["b"].InternalIP.IP,
 					LinkIndex: tunlIface,
+					Src:       nodes["c"].InternalIP.IP,
 					Protocol:  unix.RTPROT_STATIC,
 				},
 				{
@@ -879,6 +890,7 @@ func TestRoutes(t *testing.T) {
 					Flags:     int(netlink.FLAG_ONLINK),
 					Gw:        nodes["b"].InternalIP.IP,
 					LinkIndex: tunlIface,
+					Src:       nodes["c"].InternalIP.IP,
 					Protocol:  unix.RTPROT_STATIC,
 				},
 				{
@@ -886,6 +898,7 @@ func TestRoutes(t *testing.T) {
 					Flags:     int(netlink.FLAG_ONLINK),
 					Gw:        nodes["b"].InternalIP.IP,
 					LinkIndex: tunlIface,
+					Src:       nodes["c"].InternalIP.IP,
 					Protocol:  unix.RTPROT_STATIC,
 				},
 			},
