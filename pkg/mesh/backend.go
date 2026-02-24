@@ -61,7 +61,7 @@ type Node struct {
 	Key              wgtypes.Key
 	NoInternalIP     bool
 	InternalIP       *net.IPNet
-	CiliumInternalIP net.IP
+	CNICompatibilityIP *net.IPNet
 	// LastSeen is a Unix time for the last time
 	// the node confirmed it was live.
 	LastSeen int64

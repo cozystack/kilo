@@ -63,7 +63,7 @@ const (
 	discoveredEndpointsKey        = "kilo.squat.ai/discovered-endpoints"
 	allowedLocationIPsKey         = "kilo.squat.ai/allowed-location-ips"
 	granularityKey                = "kilo.squat.ai/granularity"
-	ciliumInternalIPAnnotationKey = "kilo.squat.ai/cilium-internal-ip"
+	cniCompatibilityIPAnnotationKey = "kilo.squat.ai/cni-compatibility-ip"
 	// RegionLabelKey is the key for the well-known Kubernetes topology region label.
 	RegionLabelKey  = "topology.kubernetes.io/region"
 	jsonPatchSlash  = "~1"
@@ -242,10 +242,10 @@ func (nb *nodeBackend) Set(ctx context.Context, name string, node *mesh.Node) er
 		n.ObjectMeta.Annotations[discoveredEndpointsKey] = string(discoveredEndpoints)
 	}
 	n.ObjectMeta.Annotations[granularityKey] = string(node.Granularity)
-	if node.CiliumInternalIP != nil {
-		n.ObjectMeta.Annotations[ciliumInternalIPAnnotationKey] = node.CiliumInternalIP.String()
+	if node.CNICompatibilityIP != nil {
+		n.ObjectMeta.Annotations[cniCompatibilityIPAnnotationKey] = node.CNICompatibilityIP.String()
 	} else {
-		n.ObjectMeta.Annotations[ciliumInternalIPAnnotationKey] = ""
+		n.ObjectMeta.Annotations[cniCompatibilityIPAnnotationKey] = ""
 	}
 	oldData, err := json.Marshal(old)
 	if err != nil {
@@ -348,10 +348,10 @@ func translateNode(node *v1.Node, topologyLabel string) *mesh.Node {
 	// TODO log some error or warning.
 	key, _ := wgtypes.ParseKey(node.ObjectMeta.Annotations[keyAnnotationKey])
 
-	// Parse the Cilium internal IP if present.
-	var ciliumInternalIP net.IP
-	if cipStr, ok := node.ObjectMeta.Annotations[ciliumInternalIPAnnotationKey]; ok && cipStr != "" {
-		ciliumInternalIP = net.ParseIP(cipStr)
+	// Parse the CNI compatibility IP if present.
+	var cniCompatibilityIP *net.IPNet
+	if cipStr, ok := node.ObjectMeta.Annotations[cniCompatibilityIPAnnotationKey]; ok && cipStr != "" {
+		cniCompatibilityIP = normalizeIP(cipStr)
 	}
 
 	return &mesh.Node{
@@ -364,7 +364,7 @@ func translateNode(node *v1.Node, topologyLabel string) *mesh.Node {
 		Endpoint:            endpoint,
 		NoInternalIP:        noInternalIP,
 		InternalIP:          internalIP,
-		CiliumInternalIP:    ciliumInternalIP,
+		CNICompatibilityIP:  cniCompatibilityIP,
 		Key:                 key,
 		LastSeen:            lastSeen,
 		Leader:              leader,
