@@ -1,21 +1,22 @@
 on:
   release:
-    types: [created]
+    types: [created, published]
 name: Handle Release
 jobs:
   kgctl:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: 1.19
-    - name: Build kgctl Binaries to Be Released
-      run: make release
-    - name: Publish Release
-      uses: skx/github-action-publish-binaries@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        args: 'bin/release/kgctl-*'
+      - uses: actions/checkout@v6
+      - uses: DeterminateSystems/determinate-nix-action@v3.17.2
+      - uses: DeterminateSystems/magic-nix-cache-action@v13
+      - run: |
+          nix build .#kgctl-cross-linux-amd64 .#kgctl-cross-linux-arm64 .#kgctl-cross-linux-arm .#kgctl-cross-darwin-amd64 .#kgctl-cross-darwin-arm64 .#kgctl-cross-windows-amd64
+          for result in $(find -L . -name 'kgctl*' | grep result); do
+            cp "$result" "$(echo "$result" | sed 's|.*bin/\(.\+\)_\(.\+\)/kgctl\(.*\)|kgctl-\1-\2\3|g; s|.*bin/kgctl|kgctl-linux-amd64|g')"
+          done
+      - name: Publish Release
+        uses: skx/github-action-publish-binaries@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: "kgctl-*"

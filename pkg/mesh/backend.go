@@ -50,6 +50,9 @@ const (
 	// FullGranularity indicates that the network should create
 	// a mesh between every node.
 	FullGranularity Granularity = "full"
+	// CrossGranularity indicates that network is encrypted only
+	// between nodes in different locations.
+	CrossGranularity Granularity = "cross"
 	// AutoGranularity can be used with kgctl to obtain
 	// the granularity automatically.
 	AutoGranularity Granularity = "auto"
@@ -57,10 +60,10 @@ const (
 
 // Node represents a node in the network.
 type Node struct {
-	Endpoint         *wireguard.Endpoint
-	Key              wgtypes.Key
-	NoInternalIP     bool
-	InternalIP       *net.IPNet
+	Endpoint           *wireguard.Endpoint
+	Key                wgtypes.Key
+	NoInternalIP       bool
+	InternalIP         *net.IPNet
 	CNICompatibilityIP *net.IPNet
 	// LastSeen is a Unix time for the last time
 	// the node confirmed it was live.

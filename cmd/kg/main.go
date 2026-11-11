@@ -77,6 +77,7 @@ var (
 	availableGranularities = strings.Join([]string{
 		string(mesh.LogicalGranularity),
 		string(mesh.FullGranularity),
+		string(mesh.CrossGranularity),
 	}, ", ")
 	availableLogLevels = strings.Join([]string{
 		logLevelAll,
@@ -237,6 +238,7 @@ func runRoot(_ *cobra.Command, _ []string) error {
 	switch gr {
 	case mesh.LogicalGranularity:
 	case mesh.FullGranularity:
+	case mesh.CrossGranularity:
 	default:
 		return fmt.Errorf("mesh granularity %v unknown; possible values are: %s", granularity, availableGranularities)
 	}
@@ -317,7 +319,7 @@ func runRoot(_ *cobra.Command, _ []string) error {
 			}
 			return nil
 		}, func(error) {
-			l.Close()
+			_ = l.Close()
 		})
 	}
 
@@ -325,7 +327,7 @@ func runRoot(_ *cobra.Command, _ []string) error {
 		ctx, cancel := context.WithCancel(context.Background())
 		// Start the mesh.
 		g.Add(func() error {
-			logger.Log("msg", fmt.Sprintf("Starting Kilo network mesh '%v'.", version.Version))
+			_ = logger.Log("msg", fmt.Sprintf("Starting Kilo network mesh '%v'.", version.Version))
 			if err := m.Run(ctx); err != nil {
 				return fmt.Errorf("error: Kilo exited unexpectedly: %v", err)
 			}
@@ -344,7 +346,7 @@ func runRoot(_ *cobra.Command, _ []string) error {
 			for {
 				select {
 				case <-term:
-					logger.Log("msg", "caught interrupt; gracefully cleaning up; see you next time!")
+					_ = logger.Log("msg", "caught interrupt; gracefully cleaning up; see you next time!")
 					return nil
 				case <-cancel:
 					return nil
