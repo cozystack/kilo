@@ -25,8 +25,17 @@ import (
 )
 
 const (
-	// checkInPeriod is how often nodes should check-in.
-	checkInPeriod = 30 * time.Second
+	// checkInPeriod is how often nodes should check in. It is deliberately
+	// raised above the upstream default of 30s. A node's WireGuard IP is
+	// assigned by its rank in the currently Ready set, and a node is Ready
+	// only while its last-seen is within twice this value. On large clusters
+	// the per-node last-seen writes create enough watch churn that liveness
+	// cannot propagate within a 60s window, collapsing every agent's Ready set
+	// and colliding most nodes on the first address of the subnet. A longer
+	// period widens the freshness window so the Ready set stays close to the
+	// full node set. This is a mitigation, not a root-cause fix; see
+	// https://github.com/squat/kilo/issues/549.
+	checkInPeriod = 5 * time.Minute
 	// DefaultKiloInterface is the default interface created and used by Kilo.
 	DefaultKiloInterface = "kilo0"
 	// DefaultKiloPort is the default UDP port Kilo uses.
@@ -50,6 +59,9 @@ const (
 	// FullGranularity indicates that the network should create
 	// a mesh between every node.
 	FullGranularity Granularity = "full"
+	// CrossGranularity indicates that network is encrypted only
+	// between nodes in different locations.
+	CrossGranularity Granularity = "cross"
 	// AutoGranularity can be used with kgctl to obtain
 	// the granularity automatically.
 	AutoGranularity Granularity = "auto"
@@ -57,10 +69,10 @@ const (
 
 // Node represents a node in the network.
 type Node struct {
-	Endpoint         *wireguard.Endpoint
-	Key              wgtypes.Key
-	NoInternalIP     bool
-	InternalIP       *net.IPNet
+	Endpoint           *wireguard.Endpoint
+	Key                wgtypes.Key
+	NoInternalIP       bool
+	InternalIP         *net.IPNet
 	CNICompatibilityIP *net.IPNet
 	// LastSeen is a Unix time for the last time
 	// the node confirmed it was live.

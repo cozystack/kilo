@@ -14,7 +14,7 @@ Example manifests can be found [in the manifests directory](https://github.com/c
 
 The behavior of `kg` can be configured using the command line flags listed below.
 
-[embedmd]:# (../tmp/help.txt)
+[embedmd]:# (../help.txt)
 ```txt
 kg is the Kilo agent.
 		It runs on every node of a cluster,
@@ -26,7 +26,7 @@ Usage:
   kg [command]
 
 Available Commands:
-  completion  generate the autocompletion script for the specified shell
+  completion  Generate the autocompletion script for the specified shell
   help        Help about any command
   version     Print the version and exit.
   webhook     webhook starts a HTTPS server to validate updates and creations of Kilo peers.
@@ -50,7 +50,7 @@ Flags:
       --local                          Should Kilo manage routes within a location? (default true)
       --log-level string               Log level to use. Possible values: all, debug, info, warn, error, none (default "info")
       --master string                  The address of the Kubernetes API server (overrides any value in kubeconfig).
-      --mesh-granularity string        The granularity of the network mesh to create. Possible values: location, full (default "location")
+      --mesh-granularity string        The granularity of the network mesh to create. Possible values: location, full, cross (default "location")
       --mtu string                     The MTU of the WireGuard interface created by Kilo. Set to 'auto' to detect from the underlay interface. (default "auto")
       --port int                       The port over which WireGuard peers should communicate. (default 51820)
       --prioritise-private-addresses   Prefer to assign a private IP address to the node's endpoint.
@@ -59,5 +59,4 @@ Flags:
       --subnet string                  CIDR from which to allocate addresses for WireGuard interfaces. (default "10.4.0.0/16")
       --topology-label string          Kubernetes node label used to group nodes into logical locations. (default "topology.kubernetes.io/region")
       --version                        Print version and exit.
-
 ```

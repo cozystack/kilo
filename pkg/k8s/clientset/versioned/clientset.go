@@ -31,8 +31,7 @@ type Interface interface {
 	KiloV1alpha1() kilov1alpha1.KiloV1alpha1Interface
 }
 
-// Clientset contains the clients for groups. Each group has exactly one
-// version included in a Clientset.
+// Clientset contains the clients for groups.
 type Clientset struct {
 	*discovery.DiscoveryClient
 	kiloV1alpha1 *kilov1alpha1.KiloV1alpha1Client

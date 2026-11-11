@@ -74,9 +74,9 @@ roleRef:
   kind: ClusterRole
   name: kilo
 subjects:
-  - kind: ServiceAccount
-    name: kilo
-    namespace: kube-system
+- kind: ServiceAccount
+  name: kilo
+  namespace: kube-system
 ---
 apiVersion: apps/v1
 kind: DaemonSet
@@ -108,11 +108,16 @@ spec:
         - --create-interface=false
         - --mesh-granularity=full
         - --kubeconfig=/etc/kubernetes/kubeconfig
+        - --internal-cidr=$(NODE_IP)/32
         env:
         - name: NODE_NAME
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
+        - name: NODE_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
         ports:
         - containerPort: 1107
           name: metrics
@@ -135,10 +140,10 @@ spec:
         - name: kubeconfig
           mountPath: /etc/kubernetes
           readOnly: true
-      - name: boringtun
-        image: leonnicolas/boringtun
+      - name: wireguard
+        image: ghcr.io/masipcat/wireguard-go-docker:0.0.20230223
         args:
-        - --disable-drop-privileges
+        - wireguard-go
         - --foreground
         - kilo0
         securityContext:
@@ -154,7 +159,8 @@ spec:
         command:
         - /bin/sh
         - -c
-        - set -e -x;
+        - |
+          set -e -x;
           cp /opt/cni/bin/* /host/opt/cni/bin/;
           TMP_CONF="$CNI_CONF_NAME".tmp;
           echo "$CNI_NETWORK_CONFIG" > $TMP_CONF;
